@@ -1,0 +1,2380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KOBE — Japanese Dining · Luxembourg</title>
+
+<meta name="description" content="KOBE — Japanese sushi and contemporary dining in the heart of Luxembourg. Discover our menu and reserve your table.">
+<meta name="theme-color" content="#090909">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+    --black:#080808;
+    --black2:#101010;
+    --white:#f7f5ef;
+    --muted:#aaa79f;
+    --line:rgba(255,255,255,.14);
+    --accent:#8f2525;
+    --serif:"Cormorant Garamond",serif;
+    --sans:"DM Sans",sans-serif;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+    background:var(--black);
+}
+
+body{
+    background:var(--black);
+    color:var(--white);
+    font-family:var(--sans);
+    overflow-x:hidden;
+}
+
+body.loading{
+    overflow:hidden;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+button{
+    font-family:inherit;
+}
+
+img{
+    display:block;
+    width:100%;
+}
+
+::selection{
+    background:var(--white);
+    color:var(--black);
+}
+
+/* =========================
+   LOADER
+========================= */
+
+.loader{
+    position:fixed;
+    inset:0;
+    background:#080808;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:opacity 1s ease,visibility 1s ease;
+}
+
+.loader.hide{
+    opacity:0;
+    visibility:hidden;
+}
+
+.loader-inner{
+    text-align:center;
+}
+
+.loader-logo{
+    font-family:var(--serif);
+    font-size:4rem;
+    letter-spacing:.18em;
+    font-weight:400;
+}
+
+.loader-sub{
+    margin-top:12px;
+    font-size:9px;
+    letter-spacing:.45em;
+    color:#aaa;
+}
+
+.loader-line{
+    width:180px;
+    height:1px;
+    background:#292929;
+    margin:35px auto 0;
+    overflow:hidden;
+}
+
+.loader-line span{
+    display:block;
+    width:0;
+    height:100%;
+    background:#fff;
+    animation:loader 1.8s ease forwards;
+}
+
+@keyframes loader{
+    to{width:100%}
+}
+
+/* =========================
+   CURSOR
+========================= */
+
+.cursor{
+    position:fixed;
+    width:9px;
+    height:9px;
+    border:1px solid rgba(255,255,255,.8);
+    border-radius:50%;
+    pointer-events:none;
+    z-index:10000;
+    transform:translate(-50%,-50%);
+    transition:
+        width .3s ease,
+        height .3s ease,
+        background .3s ease,
+        border .3s ease;
+}
+
+.cursor.active{
+    width:70px;
+    height:70px;
+    background:rgba(255,255,255,.95);
+    border-color:#fff;
+    mix-blend-mode:difference;
+}
+
+.cursor.active::after{
+    content:"VIEW";
+    color:#000;
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    letter-spacing:.2em;
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.nav{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:90px;
+    padding:0 5vw;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index:1000;
+    transition:
+        background .5s ease,
+        height .5s ease,
+        border .5s ease,
+        backdrop-filter .5s ease;
+}
+
+.nav.scrolled{
+    height:72px;
+    background:rgba(8,8,8,.82);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid var(--line);
+}
+
+.logo{
+    font-family:var(--serif);
+    font-size:32px;
+    letter-spacing:.14em;
+    font-weight:500;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:42px;
+}
+
+.nav-links a{
+    position:relative;
+    font-size:10px;
+    letter-spacing:.22em;
+    font-weight:500;
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-8px;
+    width:0;
+    height:1px;
+    background:white;
+    transition:.4s ease;
+}
+
+.nav-links a:hover::after{
+    width:100%;
+}
+
+.reserve-btn{
+    border:1px solid rgba(255,255,255,.55);
+    padding:14px 22px;
+    font-size:9px;
+    letter-spacing:.22em;
+    position:relative;
+    overflow:hidden;
+    transition:.4s ease;
+}
+
+.reserve-btn span{
+    position:relative;
+    z-index:2;
+}
+
+.reserve-btn::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:#fff;
+    transform:translateY(100%);
+    transition:.4s ease;
+}
+
+.reserve-btn:hover{
+    color:#000;
+}
+
+.reserve-btn:hover::before{
+    transform:translateY(0);
+}
+
+.menu-toggle{
+    display:none;
+    background:none;
+    border:0;
+    color:white;
+    cursor:pointer;
+}
+
+.menu-toggle div{
+    width:27px;
+    height:1px;
+    background:#fff;
+    margin:6px 0;
+    transition:.3s;
+}
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+.mobile-menu{
+    position:fixed;
+    inset:0;
+    background:#080808;
+    z-index:900;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    visibility:hidden;
+    transition:.5s ease;
+}
+
+.mobile-menu.open{
+    opacity:1;
+    visibility:visible;
+}
+
+.mobile-links{
+    text-align:center;
+}
+
+.mobile-links a{
+    display:block;
+    font-family:var(--serif);
+    font-size:52px;
+    margin:14px;
+    transform:translateY(30px);
+    opacity:0;
+    transition:.6s ease;
+}
+
+.mobile-menu.open .mobile-links a{
+    transform:translateY(0);
+    opacity:1;
+}
+
+.mobile-links a:nth-child(2){transition-delay:.05s}
+.mobile-links a:nth-child(3){transition-delay:.1s}
+.mobile-links a:nth-child(4){transition-delay:.15s}
+.mobile-links a:nth-child(5){transition-delay:.2s}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    height:100vh;
+    min-height:700px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+}
+
+.hero-bg{
+    position:absolute;
+    inset:0;
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.78),
+            rgba(0,0,0,.38),
+            rgba(0,0,0,.48)
+        ),
+        url("https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=2200&q=90");
+    background-size:cover;
+    background-position:center;
+    transform:scale(1.08);
+    animation:heroZoom 12s ease-out forwards;
+}
+
+@keyframes heroZoom{
+    to{transform:scale(1)}
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    opacity:.07;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    width:min(1400px,90%);
+    margin:auto;
+}
+
+.hero-kicker{
+    font-size:10px;
+    letter-spacing:.5em;
+    margin-bottom:28px;
+    color:#ddd;
+}
+
+.hero-title{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:clamp(70px,10vw,155px);
+    line-height:.79;
+    letter-spacing:-.035em;
+    max-width:1000px;
+}
+
+.hero-title span{
+    display:block;
+}
+
+.hero-title span:nth-child(2){
+    margin-left:9vw;
+}
+
+.hero-description{
+    max-width:430px;
+    margin:45px 0 35px 9vw;
+    color:#d0d0d0;
+    font-size:13px;
+    line-height:1.9;
+}
+
+.hero-buttons{
+    margin-left:9vw;
+    display:flex;
+    gap:14px;
+}
+
+.hero-btn{
+    padding:17px 27px;
+    border:1px solid rgba(255,255,255,.55);
+    font-size:9px;
+    letter-spacing:.25em;
+    transition:.4s ease;
+}
+
+.hero-btn.primary{
+    background:#fff;
+    color:#000;
+}
+
+.hero-btn:hover{
+    background:transparent;
+    color:#fff;
+}
+
+.hero-scroll{
+    position:absolute;
+    bottom:40px;
+    left:5vw;
+    z-index:3;
+    display:flex;
+    align-items:center;
+    gap:15px;
+    font-size:8px;
+    letter-spacing:.3em;
+}
+
+.scroll-line{
+    width:55px;
+    height:1px;
+    background:#fff;
+    position:relative;
+    overflow:hidden;
+}
+
+.scroll-line::after{
+    content:"";
+    position:absolute;
+    left:-100%;
+    top:0;
+    width:100%;
+    height:100%;
+    background:#777;
+    animation:scrollLine 2s infinite;
+}
+
+@keyframes scrollLine{
+    50%,100%{left:100%}
+}
+
+/* =========================
+   MARQUEE
+========================= */
+
+.marquee{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:22px 0;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.marquee-track{
+    display:inline-flex;
+    animation:marquee 25s linear infinite;
+}
+
+.marquee span{
+    font-family:var(--serif);
+    font-size:28px;
+    padding:0 35px;
+    color:#d9d6ce;
+}
+
+.marquee span::after{
+    content:"✦";
+    margin-left:70px;
+    font-family:Arial;
+    font-size:10px;
+}
+
+@keyframes marquee{
+    to{transform:translateX(-50%)}
+}
+
+/* =========================
+   GENERAL
+========================= */
+
+section{
+    position:relative;
+}
+
+.section{
+    padding:150px 7vw;
+}
+
+.eyebrow{
+    font-size:9px;
+    letter-spacing:.38em;
+    color:#aaa;
+    margin-bottom:30px;
+}
+
+.big-heading{
+    font-family:var(--serif);
+    font-size:clamp(55px,7vw,110px);
+    line-height:.87;
+    font-weight:300;
+    letter-spacing:-.025em;
+}
+
+.reveal{
+    opacity:0;
+    transform:translateY(60px);
+    transition:1s cubic-bezier(.16,1,.3,1);
+}
+
+.reveal.visible{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* =========================
+   INTRO
+========================= */
+
+.intro{
+    background:var(--black);
+}
+
+.intro-grid{
+    max-width:1450px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10vw;
+    align-items:center;
+}
+
+.intro-text{
+    padding-left:5vw;
+}
+
+.intro-copy{
+    margin-top:45px;
+    max-width:430px;
+    color:#aaa;
+    line-height:2;
+    font-size:13px;
+}
+
+.intro-image{
+    height:650px;
+    overflow:hidden;
+    position:relative;
+}
+
+.intro-image img{
+    height:100%;
+    object-fit:cover;
+    transition:transform 1.2s cubic-bezier(.16,1,.3,1);
+}
+
+.intro-image:hover img{
+    transform:scale(1.05);
+}
+
+.vertical-label{
+    position:absolute;
+    right:-70px;
+    bottom:100px;
+    transform:rotate(90deg);
+    font-size:8px;
+    letter-spacing:.4em;
+    color:#777;
+}
+
+/* =========================
+   DISHES
+========================= */
+
+.dishes{
+    background:#0d0d0d;
+    padding:150px 5vw;
+}
+
+.dishes-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+    max-width:1500px;
+    margin:auto;
+    margin-bottom:70px;
+}
+
+.dishes-note{
+    max-width:300px;
+    font-size:11px;
+    color:#858585;
+    line-height:1.8;
+}
+
+.dishes-grid{
+    max-width:1500px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1.2fr .8fr .95fr;
+    gap:18px;
+    align-items:start;
+}
+
+.dish{
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+}
+
+.dish:nth-child(2){
+    margin-top:120px;
+}
+
+.dish:nth-child(3){
+    margin-top:40px;
+}
+
+.dish:nth-child(4){
+    margin-top:-30px;
+}
+
+.dish-image{
+    overflow:hidden;
+    position:relative;
+}
+
+.dish-image img{
+    aspect-ratio:4/5;
+    object-fit:cover;
+    transition:transform 1s cubic-bezier(.16,1,.3,1);
+}
+
+.dish:hover img{
+    transform:scale(1.07);
+}
+
+.dish-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(transparent 50%,rgba(0,0,0,.85));
+    opacity:.5;
+    transition:.5s;
+}
+
+.dish:hover .dish-overlay{
+    opacity:.85;
+}
+
+.dish-info{
+    position:absolute;
+    bottom:25px;
+    left:25px;
+    right:25px;
+    z-index:2;
+}
+
+.dish-info small{
+    font-size:8px;
+    letter-spacing:.3em;
+    color:#ccc;
+}
+
+.dish-info h3{
+    font-family:var(--serif);
+    font-size:31px;
+    font-weight:400;
+    margin-top:6px;
+}
+
+.dish-arrow{
+    position:absolute;
+    right:25px;
+    bottom:28px;
+    width:34px;
+    height:34px;
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.4s;
+}
+
+.dish:hover .dish-arrow{
+    background:#fff;
+    color:#000;
+}
+
+/* =========================
+   MENU
+========================= */
+
+.menu-section{
+    background:#f2efe7;
+    color:#111;
+    padding:150px 8vw;
+}
+
+.menu-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    max-width:1200px;
+    margin:auto;
+    margin-bottom:70px;
+}
+
+.menu-top .eyebrow{
+    color:#777;
+}
+
+.menu-description{
+    max-width:330px;
+    color:#666;
+    font-size:12px;
+    line-height:1.8;
+}
+
+.menu-tabs{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    gap:30px;
+    border-bottom:1px solid #ccc;
+    margin-bottom:45px;
+}
+
+.menu-tab{
+    background:none;
+    border:0;
+    padding:0 0 15px;
+    font-size:9px;
+    letter-spacing:.25em;
+    cursor:pointer;
+    color:#999;
+    position:relative;
+}
+
+.menu-tab.active{
+    color:#111;
+}
+
+.menu-tab.active::after{
+    content:"";
+    position:absolute;
+    bottom:-1px;
+    left:0;
+    width:100%;
+    height:1px;
+    background:#111;
+}
+
+.menu-list{
+    max-width:1200px;
+    margin:auto;
+}
+
+.menu-item{
+    padding:27px 0;
+    border-bottom:1px solid #d0ccc3;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.menu-item-left{
+    display:flex;
+    gap:30px;
+    align-items:center;
+}
+
+.menu-number{
+    font-size:9px;
+    color:#999;
+}
+
+.menu-name{
+    font-family:var(--serif);
+    font-size:31px;
+}
+
+.menu-category{
+    font-size:8px;
+    letter-spacing:.25em;
+    color:#888;
+}
+
+/* =========================
+   EXPERIENCE
+========================= */
+
+.experience{
+    min-height:90vh;
+    display:flex;
+    align-items:center;
+    overflow:hidden;
+    background:#080808;
+}
+
+.experience-bg{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,.25)),
+        url("https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?auto=format&fit=crop&w=2200&q=90");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    opacity:.75;
+}
+
+.experience-content{
+    position:relative;
+    z-index:2;
+    padding:150px 10vw;
+    max-width:950px;
+}
+
+.experience-content p{
+    max-width:500px;
+    margin-top:40px;
+    color:#bdbdbd;
+    line-height:2;
+    font-size:13px;
+}
+
+/* =========================
+   REVIEWS
+========================= */
+
+.reviews{
+    background:#111;
+    padding:150px 7vw;
+}
+
+.review-header{
+    max-width:1400px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:70px;
+}
+
+.rating{
+    text-align:right;
+}
+
+.rating-number{
+    font-family:var(--serif);
+    font-size:90px;
+    line-height:.8;
+}
+
+.stars{
+    letter-spacing:6px;
+    margin-top:18px;
+}
+
+.rating-count{
+    color:#777;
+    font-size:9px;
+    letter-spacing:.25em;
+    margin-top:10px;
+}
+
+.review-grid{
+    max-width:1400px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+}
+
+.review-card{
+    border:1px solid #292929;
+    padding:45px 35px;
+    min-height:260px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:.5s ease;
+}
+
+.review-card:hover{
+    background:#171717;
+    transform:translateY(-8px);
+}
+
+.quote{
+    font-family:var(--serif);
+    font-size:27px;
+    line-height:1.25;
+}
+
+.review-meta{
+    color:#777;
+    font-size:8px;
+    letter-spacing:.25em;
+}
+
+/* =========================
+   GALLERY
+========================= */
+
+.gallery{
+    padding:150px 5vw;
+    background:#080808;
+}
+
+.gallery-header{
+    max-width:1500px;
+    margin:auto;
+    margin-bottom:65px;
+}
+
+.gallery-grid{
+    max-width:1500px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1.1fr .75fr 1fr;
+    gap:15px;
+}
+
+.gallery-item{
+    overflow:hidden;
+    position:relative;
+    cursor:pointer;
+}
+
+.gallery-item:nth-child(2){
+    margin-top:100px;
+}
+
+.gallery-item:nth-child(3){
+    margin-top:30px;
+}
+
+.gallery-item:nth-child(4){
+    margin-top:-70px;
+}
+
+.gallery-item:nth-child(5){
+    margin-top:30px;
+}
+
+.gallery-item img{
+    height:600px;
+    object-fit:cover;
+    transition:1s cubic-bezier(.16,1,.3,1);
+}
+
+.gallery-item:nth-child(2) img,
+.gallery-item:nth-child(4) img{
+    height:450px;
+}
+
+.gallery-item:hover img{
+    transform:scale(1.06);
+}
+
+.gallery-hover{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    opacity:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.5s;
+}
+
+.gallery-hover span{
+    width:80px;
+    height:80px;
+    border:1px solid #fff;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:8px;
+    letter-spacing:.2em;
+}
+
+.gallery-item:hover .gallery-hover{
+    opacity:1;
+}
+
+/* =========================
+   LIGHTBOX
+========================= */
+
+.lightbox{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.96);
+    z-index:5000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    visibility:hidden;
+    transition:.4s;
+    padding:40px;
+}
+
+.lightbox.open{
+    opacity:1;
+    visibility:visible;
+}
+
+.lightbox img{
+    max-width:90%;
+    max-height:85vh;
+    width:auto;
+    object-fit:contain;
+}
+
+.lightbox-close{
+    position:absolute;
+    top:30px;
+    right:40px;
+    background:none;
+    color:#fff;
+    border:0;
+    font-size:30px;
+    cursor:pointer;
+}
+
+/* =========================
+   LOCATION
+========================= */
+
+.location{
+    padding:150px 7vw;
+    background:#f2efe7;
+    color:#111;
+}
+
+.location-grid{
+    max-width:1400px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10vw;
+    align-items:center;
+}
+
+.location-address{
+    margin-top:40px;
+    font-family:var(--serif);
+    font-size:36px;
+    line-height:1.2;
+}
+
+.map-card{
+    min-height:450px;
+    position:relative;
+    overflow:hidden;
+    background:
+        linear-gradient(rgba(10,10,10,.15),rgba(10,10,10,.15)),
+        url("https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1600&q=85");
+    background-size:cover;
+    background-position:center;
+}
+
+.map-label{
+    position:absolute;
+    left:30px;
+    bottom:30px;
+    background:#111;
+    color:#fff;
+    padding:20px 25px;
+}
+
+.map-label small{
+    font-size:8px;
+    letter-spacing:.25em;
+}
+
+.map-label strong{
+    display:block;
+    font-family:var(--serif);
+    font-size:25px;
+    font-weight:400;
+    margin-top:5px;
+}
+
+/* =========================
+   FINAL CTA
+========================= */
+
+.final-cta{
+    min-height:80vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+}
+
+.final-bg{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(rgba(0,0,0,.65),rgba(0,0,0,.85)),
+        url("https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=2200&q=90");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+}
+
+.final-content{
+    position:relative;
+    z-index:2;
+}
+
+.final-content .eyebrow{
+    margin-bottom:30px;
+}
+
+.final-title{
+    font-family:var(--serif);
+    font-size:clamp(70px,11vw,170px);
+    font-weight:300;
+    line-height:.8;
+    letter-spacing:-.04em;
+}
+
+.final-button{
+    display:inline-block;
+    margin-top:50px;
+    border:1px solid rgba(255,255,255,.7);
+    padding:20px 35px;
+    font-size:9px;
+    letter-spacing:.3em;
+    transition:.4s;
+}
+
+.final-button:hover{
+    background:#fff;
+    color:#000;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    background:#070707;
+    padding:80px 7vw 35px;
+}
+
+.footer-top{
+    display:flex;
+    justify-content:space-between;
+    gap:50px;
+    padding-bottom:80px;
+    border-bottom:1px solid var(--line);
+}
+
+.footer-logo{
+    font-family:var(--serif);
+    font-size:65px;
+    letter-spacing:.08em;
+}
+
+.footer-info{
+    display:flex;
+    gap:80px;
+}
+
+.footer-column h4{
+    font-size:8px;
+    letter-spacing:.3em;
+    color:#666;
+    margin-bottom:20px;
+}
+
+.footer-column p,
+.footer-column a{
+    display:block;
+    font-size:11px;
+    line-height:2;
+    color:#aaa;
+}
+
+.footer-column a:hover{
+    color:#fff;
+}
+
+.footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    padding-top:30px;
+    color:#555;
+    font-size:8px;
+    letter-spacing:.18em;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1000px){
+
+    .nav-links{
+        display:none;
+    }
+
+    .menu-toggle{
+        display:block;
+    }
+
+    .nav .reserve-btn{
+        display:none;
+    }
+
+    .hero-title{
+        font-size:clamp(70px,14vw,120px);
+    }
+
+    .intro-grid,
+    .location-grid{
+        grid-template-columns:1fr;
+    }
+
+    .intro-text{
+        padding-left:0;
+    }
+
+    .intro-image{
+        height:550px;
+    }
+
+    .dishes-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .dish:nth-child(2),
+    .dish:nth-child(3),
+    .dish:nth-child(4){
+        margin-top:0;
+    }
+
+    .review-grid{
+        grid-template-columns:1fr;
+    }
+
+    .gallery-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .gallery-item:nth-child(n){
+        margin-top:0;
+    }
+
+    .footer-top{
+        flex-direction:column;
+    }
+}
+
+@media(max-width:650px){
+
+    .cursor{
+        display:none;
+    }
+
+    .nav{
+        height:75px;
+        padding:0 6vw;
+    }
+
+    .logo{
+        font-size:27px;
+    }
+
+    .hero{
+        min-height:680px;
+    }
+
+    .hero-bg{
+        background-position:58% center;
+    }
+
+    .hero-content{
+        width:88%;
+    }
+
+    .hero-kicker{
+        font-size:8px;
+        letter-spacing:.35em;
+    }
+
+    .hero-title{
+        font-size:68px;
+        line-height:.82;
+    }
+
+    .hero-title span:nth-child(2){
+        margin-left:0;
+    }
+
+    .hero-description{
+        margin:35px 0 30px;
+        font-size:12px;
+        max-width:330px;
+    }
+
+    .hero-buttons{
+        margin-left:0;
+        flex-direction:column;
+        width:210px;
+    }
+
+    .hero-btn{
+        text-align:center;
+    }
+
+    .hero-scroll{
+        left:6vw;
+    }
+
+    .section,
+    .dishes,
+    .menu-section,
+    .reviews,
+    .gallery,
+    .location{
+        padding:100px 6vw;
+    }
+
+    .big-heading{
+        font-size:61px;
+    }
+
+    .intro-image{
+        height:450px;
+    }
+
+    .dishes-header,
+    .menu-top,
+    .review-header{
+        display:block;
+    }
+
+    .dishes-note,
+    .menu-description{
+        margin-top:30px;
+    }
+
+    .dishes-grid{
+        grid-template-columns:1fr;
+    }
+
+    .dish:nth-child(n){
+        margin-top:0;
+    }
+
+    .dish-info h3{
+        font-size:27px;
+    }
+
+    .menu-tabs{
+        overflow-x:auto;
+        padding-bottom:0;
+        gap:25px;
+    }
+
+    .menu-tab{
+        white-space:nowrap;
+    }
+
+    .menu-item{
+        align-items:flex-start;
+    }
+
+    .menu-name{
+        font-size:25px;
+    }
+
+    .menu-category{
+        display:none;
+    }
+
+    .experience{
+        min-height:700px;
+    }
+
+    .experience-bg{
+        background-attachment:scroll;
+    }
+
+    .experience-content{
+        padding:100px 6vw;
+    }
+
+    .rating{
+        text-align:left;
+        margin-top:45px;
+    }
+
+    .rating-number{
+        font-size:75px;
+    }
+
+    .gallery-grid{
+        grid-template-columns:1fr;
+    }
+
+    .gallery-item img,
+    .gallery-item:nth-child(2) img,
+    .gallery-item:nth-child(4) img{
+        height:450px;
+    }
+
+    .location-address{
+        font-size:31px;
+    }
+
+    .map-card{
+        min-height:400px;
+    }
+
+    .final-cta{
+        min-height:650px;
+    }
+
+    .final-bg{
+        background-attachment:scroll;
+    }
+
+    .final-title{
+        font-size:76px;
+    }
+
+    .footer-top{
+        padding-bottom:50px;
+    }
+
+    .footer-logo{
+        font-size:52px;
+    }
+
+    .footer-info{
+        flex-direction:column;
+        gap:35px;
+    }
+
+    .footer-bottom{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .mobile-links a{
+        font-size:44px;
+    }
+}
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms!important;
+        animation-iteration-count:1!important;
+        scroll-behavior:auto!important;
+        transition-duration:.01ms!important;
+    }
+
+}
+
+</style>
+</head>
+
+<body class="loading">
+
+<div class="loader" id="loader">
+    <div class="loader-inner">
+        <div class="loader-logo">KOBE</div>
+        <div class="loader-sub">JAPANESE DINING · LUXEMBOURG</div>
+        <div class="loader-line"><span></span></div>
+    </div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+
+<header class="nav" id="navbar">
+
+    <a href="#top" class="logo">KOBE</a>
+
+    <nav class="nav-links">
+        <a href="#menu">MENU</a>
+        <a href="#experience">EXPERIENCE</a>
+        <a href="#gallery">GALLERY</a>
+        <a href="#location">CONTACT</a>
+    </nav>
+
+    <a class="reserve-btn" href="https://kobesushi.resos.com/booking" target="_blank">
+        <span>RESERVE A TABLE</span>
+    </a>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <div></div>
+        <div></div>
+    </button>
+
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-links">
+        <a href="#menu">MENU</a>
+        <a href="#experience">EXPERIENCE</a>
+        <a href="#gallery">GALLERY</a>
+        <a href="#location">CONTACT</a>
+        <a href="https://kobesushi.resos.com/booking" target="_blank">RESERVE</a>
+    </div>
+</div>
+
+<main id="top">
+
+<section class="hero">
+
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+
+        <div class="hero-kicker">
+            JAPANESE DINING · LUXEMBOURG
+        </div>
+
+        <h1 class="hero-title">
+            <span>AN ELEVATED</span>
+            <span>JAPANESE</span>
+            <span>EXPERIENCE.</span>
+        </h1>
+
+        <p class="hero-description">
+            Sushi, contemporary Japanese cuisine and an atmosphere
+            designed for memorable evenings in the heart of Luxembourg.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="https://kobesushi.resos.com/booking"
+               target="_blank"
+               class="hero-btn primary">
+                RESERVE A TABLE
+            </a>
+
+            <a href="#menu" class="hero-btn">
+                EXPLORE THE MENU
+            </a>
+        </div>
+
+    </div>
+
+    <div class="hero-scroll">
+        <div class="scroll-line"></div>
+        SCROLL TO DISCOVER
+    </div>
+
+</section>
+
+<div class="marquee">
+    <div class="marquee-track">
+        <span>SUSHI</span>
+        <span>JAPANESE DINING</span>
+        <span>LUXEMBOURG</span>
+        <span>CONTEMPORARY CUISINE</span>
+        <span>SUSHI</span>
+        <span>JAPANESE DINING</span>
+        <span>LUXEMBOURG</span>
+        <span>CONTEMPORARY CUISINE</span>
+    </div>
+</div>
+
+<section class="section intro">
+
+    <div class="intro-grid">
+
+        <div class="intro-text reveal">
+
+            <div class="eyebrow">
+                THE KOBE EXPERIENCE
+            </div>
+
+            <h2 class="big-heading">
+                WHERE JAPANESE
+                <br>
+                CRAFT MEETS
+                <br>
+                CONTEMPORARY
+                <br>
+                DINING.
+            </h2>
+
+            <p class="intro-copy">
+                Kobe brings together Japanese-inspired cuisine,
+                carefully crafted sushi and a contemporary dining
+                atmosphere in the heart of Luxembourg.
+            </p>
+
+        </div>
+
+        <div class="intro-image reveal">
+            <img
+                src="https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=1400&q=90"
+                alt="Japanese sushi dining">
+            <div class="vertical-label">
+                KOBE · LUXEMBOURG
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="dishes">
+
+    <div class="dishes-header reveal">
+
+        <div>
+            <div class="eyebrow">
+                FROM THE TABLE
+            </div>
+
+            <h2 class="big-heading">
+                SIGNATURE
+                <br>
+                SELECTION
+            </h2>
+        </div>
+
+        <p class="dishes-note">
+            A glimpse of the Kobe table.
+            Explore a selection of dishes and
+            Japanese-inspired flavours.
+        </p>
+
+    </div>
+
+    <div class="dishes-grid">
+
+        <div class="dish reveal">
+            <div class="dish-image">
+                <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=1200&q=90" alt="Sushi">
+                <div class="dish-overlay"></div>
+                <div class="dish-info">
+                    <small>JAPANESE CLASSIC</small>
+                    <h3>Sushi</h3>
+                </div>
+                <div class="dish-arrow">↗</div>
+            </div>
+        </div>
+
+        <div class="dish reveal">
+            <div class="dish-image">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=90" alt="Salmon tartare">
+                <div class="dish-overlay"></div>
+                <div class="dish-info">
+                    <small>SIGNATURE</small>
+                    <h3>Tartare de Saumon à la Truffe</h3>
+                </div>
+                <div class="dish-arrow">↗</div>
+            </div>
+        </div>
+
+        <div class="dish reveal">
+            <div class="dish-image">
+                <img src="https://images.unsplash.com/photo-1558985250-27a406d64cb3?auto=format&fit=crop&w=1000&q=90" alt="Japanese dish">
+                <div class="dish-overlay"></div>
+                <div class="dish-info">
+                    <small>SELECTION</small>
+                    <h3>Tataki de Thon</h3>
+                </div>
+                <div class="dish-arrow">↗</div>
+            </div>
+        </div>
+
+        <div class="dish reveal">
+            <div class="dish-image">
+                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=90" alt="Poke bowl">
+                <div class="dish-overlay"></div>
+                <div class="dish-info">
+                    <small>FRESH · VEGAN</small>
+                    <h3>Vegan Poke Bowl</h3>
+                </div>
+                <div class="dish-arrow">↗</div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="menu-section" id="menu">
+
+    <div class="menu-top reveal">
+
+        <div>
+            <div class="eyebrow">
+                DISCOVER
+            </div>
+
+            <h2 class="big-heading">
+                THE MENU
+            </h2>
+        </div>
+
+        <p class="menu-description">
+            Discover selected dishes from the Kobe
+            kitchen, from sushi and signature creations
+            to desserts.
+        </p>
+
+    </div>
+
+    <div class="menu-tabs reveal">
+
+        <button class="menu-tab active" data-category="all">
+            ALL
+        </button>
+
+        <button class="menu-tab" data-category="sushi">
+            SUSHI
+        </button>
+
+        <button class="menu-tab" data-category="signature">
+            SIGNATURES
+        </button>
+
+        <button class="menu-tab" data-category="vegan">
+            VEGAN
+        </button>
+
+        <button class="menu-tab" data-category="dessert">
+            DESSERTS
+        </button>
+
+    </div>
+
+    <div class="menu-list">
+
+        <div class="menu-item reveal" data-category="sushi">
+            <div class="menu-item-left">
+                <span class="menu-number">01</span>
+                <span class="menu-name">Sushi</span>
+            </div>
+            <span class="menu-category">SUSHI</span>
+        </div>
+
+        <div class="menu-item reveal" data-category="signature">
+            <div class="menu-item-left">
+                <span class="menu-number">02</span>
+                <span class="menu-name">Tartare de Saumon à la Truffe</span>
+            </div>
+            <span class="menu-category">SIGNATURE</span>
+        </div>
+
+        <div class="menu-item reveal" data-category="signature">
+            <div class="menu-item-left">
+                <span class="menu-number">03</span>
+                <span class="menu-name">Tataki de Thon</span>
+            </div>
+            <span class="menu-category">SIGNATURE</span>
+        </div>
+
+        <div class="menu-item reveal" data-category="vegan">
+            <div class="menu-item-left">
+                <span class="menu-number">04</span>
+                <span class="menu-name">Vegan Poke Bowl</span>
+            </div>
+            <span class="menu-category">VEGAN</span>
+        </div>
+
+        <div class="menu-item reveal" data-category="vegan">
+            <div class="menu-item-left">
+                <span class="menu-number">05</span>
+                <span class="menu-name">Vegan Platter</span>
+            </div>
+            <span class="menu-category">VEGAN</span>
+        </div>
+
+        <div class="menu-item reveal" data-category="dessert">
+            <div class="menu-item-left">
+                <span class="menu-number">06</span>
+                <span class="menu-name">Matcha Crème Brûlée</span>
+            </div>
+            <span class="menu-category">DESSERT</span>
+        </div>
+
+        <div class="menu-item reveal" data-category="dessert">
+            <div class="menu-item-left">
+                <span class="menu-number">07</span>
+                <span class="menu-name">Gâteau au Chocolat Maison</span>
+            </div>
+            <span class="menu-category">DESSERT</span>
+        </div>
+
+        <div class="menu-item reveal" data-category="dessert">
+            <div class="menu-item-left">
+                <span class="menu-number">08</span>
+                <span class="menu-name">Cheesecake</span>
+            </div>
+            <span class="menu-category">DESSERT</span>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="experience" id="experience">
+
+    <div class="experience-bg"></div>
+
+    <div class="experience-content reveal">
+
+        <div class="eyebrow">
+            THE EXPERIENCE
+        </div>
+
+        <h2 class="big-heading">
+            MORE THAN
+            <br>
+            A MEAL.
+        </h2>
+
+        <p>
+            An atmosphere where Japanese-inspired cuisine,
+            contemporary design and attentive hospitality
+            come together for memorable evenings.
+        </p>
+
+    </div>
+
+</section>
+
+<section class="reviews">
+
+    <div class="review-header reveal">
+
+        <div>
+            <div class="eyebrow">
+                GUESTS OF KOBE
+            </div>
+
+            <h2 class="big-heading">
+                LOVED BY
+                <br>
+                OUR GUESTS.
+            </h2>
+        </div>
+
+        <div class="rating">
+            <div class="rating-number">4.7</div>
+            <div class="stars">★★★★★</div>
+            <div class="rating-count">
+                1,602 REVIEWS
+            </div>
+        </div>
+
+    </div>
+
+    <div class="review-grid">
+
+        <div class="review-card reveal">
+            <div class="quote">
+                “Very friendly service and great food.”
+            </div>
+            <div class="review-meta">
+                GUEST REVIEW
+            </div>
+        </div>
+
+        <div class="review-card reveal">
+            <div class="quote">
+                “Everything was perfect.”
+            </div>
+            <div class="review-meta">
+                GUEST REVIEW
+            </div>
+        </div>
+
+        <div class="review-card reveal">
+            <div class="quote">
+                “The vegetarian sushi was delicious and beautifully presented.”
+            </div>
+            <div class="review-meta">
+                GUEST REVIEW
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="gallery" id="gallery">
+
+    <div class="gallery-header reveal">
+
+        <div class="eyebrow">
+            VISUAL JOURNEY
+        </div>
+
+        <h2 class="big-heading">
+            INSIDE KOBE.
+        </h2>
+
+    </div>
+
+    <div class="gallery-grid">
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=1400&q=90" alt="Sushi">
+            <div class="gallery-hover">
+                <span>VIEW</span>
+            </div>
+        </div>
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=1200&q=90" alt="Japanese dining">
+            <div class="gallery-hover">
+                <span>VIEW</span>
+            </div>
+        </div>
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=1200&q=90" alt="Japanese food">
+            <div class="gallery-hover">
+                <span>VIEW</span>
+            </div>
+        </div>
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=90" alt="Japanese cuisine">
+            <div class="gallery-hover">
+                <span>VIEW</span>
+            </div>
+        </div>
+
+        <div class="gallery-item reveal">
+            <img src="https://images.unsplash.com/photo-1558985250-27a406d64cb3?auto=format&fit=crop&w=1200&q=90" alt="Japanese dish">
+            <div class="gallery-hover">
+                <span>VIEW</span>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" id="lightboxClose">×</button>
+    <img id="lightboxImage" src="" alt="">
+</div>
+
+<section class="location" id="location">
+
+    <div class="location-grid">
+
+        <div class="reveal">
+
+            <div class="eyebrow">
+                FIND US
+            </div>
+
+            <h2 class="big-heading">
+                IN THE
+                <br>
+                HEART OF
+                <br>
+                LUXEMBOURG.
+            </h2>
+
+            <div class="location-address">
+                4 Rue de l'Eau
+                <br>
+                1449 Ville-Haute
+                <br>
+                Luxembourg
+            </div>
+
+            <br>
+
+            <a
+                href="https://www.google.com/maps/search/?api=1&query=Kobe+4+Rue+de+l'Eau+Luxembourg"
+                target="_blank"
+                class="hero-btn"
+                style="display:inline-block;color:#111;border-color:#111;"
+            >
+                OPEN IN GOOGLE MAPS
+            </a>
+
+        </div>
+
+        <div class="map-card reveal">
+
+            <div class="map-label">
+                <small>KOBE</small>
+                <strong>Luxembourg</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="final-cta">
+
+    <div class="final-bg"></div>
+
+    <div class="final-content reveal">
+
+        <div class="eyebrow">
+            YOUR TABLE AWAITS
+        </div>
+
+        <h2 class="final-title">
+            SEE YOU
+            <br>
+            AT KOBE.
+        </h2>
+
+        <a
+            href="https://kobesushi.resos.com/booking"
+            target="_blank"
+            class="final-button"
+        >
+            RESERVE A TABLE
+        </a>
+
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+
+    <div class="footer-top">
+
+        <div class="footer-logo">
+            KOBE
+        </div>
+
+        <div class="footer-info">
+
+            <div class="footer-column">
+                <h4>ADDRESS</h4>
+                <p>4 Rue de l'Eau</p>
+                <p>1449 Ville-Haute</p>
+                <p>Luxembourg</p>
+            </div>
+
+            <div class="footer-column">
+                <h4>EXPLORE</h4>
+                <a href="#menu">Menu</a>
+                <a href="#experience">Experience</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#location">Contact</a>
+            </div>
+
+            <div class="footer-column">
+                <h4>RESERVATIONS</h4>
+                <a href="https://kobesushi.resos.com/booking" target="_blank">
+                    Reserve a table
+                </a>
+                <a href="http://www.kobesushi.lu/" target="_blank">
+                    Website
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <span>© 2026 KOBE</span>
+        <span>JAPANESE DINING · LUXEMBOURG</span>
+    </div>
+
+</footer>
+
+<script>
+
+/* =========================
+   LOADER
+========================= */
+
+window.addEventListener("load",()=>{
+
+    setTimeout(()=>{
+
+        document.getElementById("loader").classList.add("hide");
+        document.body.classList.remove("loading");
+
+    },1800);
+
+});
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+const navbar=document.getElementById("navbar");
+
+window.addEventListener("scroll",()=>{
+
+    if(window.scrollY>50){
+        navbar.classList.add("scrolled");
+    }else{
+        navbar.classList.remove("scrolled");
+    }
+
+});
+
+
+/* =========================
+   MOBILE MENU
+========================= */
+
+const menuToggle=document.getElementById("menuToggle");
+const mobileMenu=document.getElementById("mobileMenu");
+
+menuToggle.addEventListener("click",()=>{
+
+    mobileMenu.classList.toggle("open");
+
+});
+
+document.querySelectorAll(".mobile-links a").forEach(link=>{
+
+    link.addEventListener("click",()=>{
+        mobileMenu.classList.remove("open");
+    });
+
+});
+
+
+/* =========================
+   REVEAL ANIMATIONS
+========================= */
+
+const observer=new IntersectionObserver(
+    entries=>{
+
+        entries.forEach(entry=>{
+
+            if(entry.isIntersecting){
+
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+
+            }
+
+        });
+
+    },
+    {
+        threshold:.12
+    }
+);
+
+document.querySelectorAll(".reveal").forEach(element=>{
+    observer.observe(element);
+});
+
+
+/* =========================
+   MENU FILTER
+========================= */
+
+const tabs=document.querySelectorAll(".menu-tab");
+const menuItems=document.querySelectorAll(".menu-item");
+
+tabs.forEach(tab=>{
+
+    tab.addEventListener("click",()=>{
+
+        tabs.forEach(t=>t.classList.remove("active"));
+        tab.classList.add("active");
+
+        const category=tab.dataset.category;
+
+        menuItems.forEach(item=>{
+
+            if(category==="all" || item.dataset.category===category){
+
+                item.style.display="flex";
+
+                setTimeout(()=>{
+                    item.style.opacity="1";
+                    item.style.transform="translateY(0)";
+                },20);
+
+            }else{
+
+                item.style.opacity="0";
+                item.style.transform="translateY(10px)";
+
+                setTimeout(()=>{
+                    item.style.display="none";
+                },250);
+
+            }
+
+        });
+
+    });
+
+});
+
+
+/* =========================
+   LIGHTBOX
+========================= */
+
+const lightbox=document.getElementById("lightbox");
+const lightboxImage=document.getElementById("lightboxImage");
+const lightboxClose=document.getElementById("lightboxClose");
+
+document.querySelectorAll(".gallery-item").forEach(item=>{
+
+    item.addEventListener("click",()=>{
+
+        const image=item.querySelector("img");
+
+        lightboxImage.src=image.src;
+        lightboxImage.alt=image.alt;
+
+        lightbox.classList.add("open");
+
+        document.body.style.overflow="hidden";
+
+    });
+
+});
+
+function closeLightbox(){
+
+    lightbox.classList.remove("open");
+    document.body.style.overflow="";
+
+}
+
+lightboxClose.addEventListener("click",closeLightbox);
+
+lightbox.addEventListener("click",e=>{
+
+    if(e.target===lightbox){
+        closeLightbox();
+    }
+
+});
+
+document.addEventListener("keydown",e=>{
+
+    if(e.key==="Escape"){
+        closeLightbox();
+    }
+
+});
+
+
+/* =========================
+   CUSTOM CURSOR
+========================= */
+
+const cursor=document.getElementById("cursor");
+
+if(window.matchMedia("(pointer:fine)").matches){
+
+    document.addEventListener("mousemove",e=>{
+
+        cursor.style.left=e.clientX+"px";
+        cursor.style.top=e.clientY+"px";
+
+    });
+
+    document.querySelectorAll(".dish,.gallery-item,.hero-btn,.reserve-btn,.final-button").forEach(element=>{
+
+        element.addEventListener("mouseenter",()=>{
+            cursor.classList.add("active");
+        });
+
+        element.addEventListener("mouseleave",()=>{
+            cursor.classList.remove("active");
+        });
+
+    });
+
+}
+
+
+/* =========================
+   SMOOTH ANCHOR OFFSET
+========================= */
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+
+    anchor.addEventListener("click",function(e){
+
+        const target=document.querySelector(this.getAttribute("href"));
+
+        if(!target) return;
+
+        e.preventDefault();
+
+        const offset=70;
+
+        window.scrollTo({
+
+            top:target.offsetTop-offset,
+            behavior:"smooth"
+
+        });
+
+    });
+
+});
+
+
+/* =========================
+   PARALLAX HERO
+========================= */
+
+const heroBg=document.querySelector(".hero-bg");
+
+window.addEventListener("scroll",()=>{
+
+    if(window.scrollY<window.innerHeight){
+
+        heroBg.style.transform=
+            `translateY(${window.scrollY*.18}px) scale(1.02)`;
+
+    }
+
+});
+
+
+/* =========================
+   PREVENT IMAGE DRAG
+========================= */
+
+document.querySelectorAll("img").forEach(img=>{
+    img.setAttribute("draggable","false");
+});
+
+</script>
+
+</body>
+</html>
